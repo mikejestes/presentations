@@ -1,0 +1,4 @@
+auto: true
+server: true
+safe: true
+exclude: ['README.md']
