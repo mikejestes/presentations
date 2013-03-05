@@ -1,5 +1,4 @@
 auto: true
 server: true
-BASEPATH: /presentations/
 permalink: :year/:month/:day/:title.html
 exclude: ['README.md']
