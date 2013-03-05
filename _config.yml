@@ -1,4 +1,5 @@
 auto: true
 server: true
-safe: true
+BASEPATH: /presentations/
+permalink: :year/:month/:day/:title.html
 exclude: ['README.md']
