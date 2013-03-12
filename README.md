@@ -3,8 +3,12 @@ mikejestes.github.com/presentations/
 
 Archive of presentations I've given.
 
+## Localhost Preview
+
+1. run `jekyll`
+2. visit `http://localhost:4000` in your favorite browser.
+
 ## Deploy
 
-1. Place secret details in `_jekyll_s3.yml` by running `jekyll-s3` to generate blank config.
-1. Prepare or create bucket by runnig `configure-s3-website --config-file _jekyll_s3.yml`
-1. Deploy site to s3 by running `jekyll-s3`
+1. Push to github
+2. Magic?
