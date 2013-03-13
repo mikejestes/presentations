@@ -1,0 +1,482 @@
+---
+layout: wdu-2013
+title: A talk on client-side MVC focusing on Backbone.js
+---
+<style>
+
+#deck .mvc p {
+    font-size: 46px;
+}
+
+#deck .compare-table {
+    border: 3px solid #ccc;
+    padding-bottom: 0;
+    margin-bottom: 40px;
+}
+
+#deck .compare-table p, #deck .compare-table div {
+    display: inline-block;
+    width: 33%;
+    vertical-align: top;
+    font-size: 46px;
+    margin-bottom: 0;
+}
+
+#deck .compare-table p:nth-child(2) span, #deck .compare-table div:nth-child(2) span {
+    display: none;
+    font-size: 60px;
+}
+
+#deck .features li {
+    font-size: 30px;
+    line-height: 2em;
+}
+
+</style>
+
+<header>
+    <h1>Client-side MVC: Backbone.js</h1>
+    <nav>
+        <ul>
+            <li><button id="prev-btn" title="Previous slide">Previous Slide</button></li>
+            <li><span id="slide-number"></span><span id="slide-total"></span></li>
+            <li><button id="next-btn" title="Next Slide">Next Slide</button></li>
+        </ul>
+    </nav>
+</header>
+<div id="deck">
+
+    <section>
+
+        <hgroup>
+            <h1>Backbone.js</h1>
+            <h2>Your template is in my Javascript</h2>
+        </hgroup>
+
+        <div class="bottom">
+            <p>Mike Estes</p>
+            <p>Web Developer</p>
+        </div>
+
+    </section>
+
+    <section>
+
+        <hgroup>
+            <h1>Backbone.js</h1>
+        </hgroup>
+
+        <ul class="features">
+            <li>Depends on jQuery (or Zepto)</li>
+            <li>Depends on underscore</li>
+            <li>Can persist to REST API, localstorage, or anything.</li>
+            <li>Templating language agnostic</li>
+        </ul>
+
+    </section>
+
+    <section>
+
+        <div class="action" style="float: right;margin-top: 2em;">
+            <h2>Don't they make TVs?</h2>
+        </div>
+
+
+        <hgroup>
+            <h1 class="float: left;">MVC?</h1>
+        </hgroup>
+
+
+        <div class="action mvc">
+            <p>Model</p>
+
+            <p>View</p>
+
+            <p>Controller</p>
+        </div>
+
+    </section>
+
+    <section>
+
+        <hgroup>
+            <h1>Backbone.js "MVC"</h1>
+        </hgroup>
+
+        <div class="action mvc">
+            <p>Models</p>
+
+            <p>Views</p>
+
+            <p><i>Containers...</i></p>
+        </div>
+
+    </section>
+
+    <section>
+
+        <hgroup>
+            <h1>But Really</h1>
+        </hgroup>
+
+        <div class="action mvc">
+        <div class="compare-table">
+            <p>Model</p>
+            <p><span>&rarr;</span></p>
+            <p>
+                Models<br>
+                Collections
+            </p>
+        </div>
+
+        <div class="compare-table">
+            <div>View</div>
+            <div><span>&rarr;</span></div>
+            <div>templates
+                <ul>
+                    <li>_</li>
+                    <li>mustache</li>
+                    <li>???</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="compare-table">
+            <p>Controller</p>
+            <p><span>&rarr;</span></p>
+            <p>Views</p>
+        </div>
+
+        <div class="action"><p>Confused yet?</p></div>
+
+    </section>
+
+
+    <section>
+
+        <hgroup>
+            <h1>Backbone Models</h1>
+        </hgroup>
+
+        <div class="">
+            <h2>Define our model</h2>
+<pre>
+var Client = Backbone.Model.extend({
+  fullname: function() {
+    return this.get('firstname') + ' ' + this.get('lastname');
+  }
+});
+
+</pre>
+        </div>
+
+        <div class="action">
+            <h2>Create our first client</h2>
+<pre>
+var client1 = new Client({
+  firstname: "Jane",
+  lastname: "Customer",
+  email: "jane@example.com",
+  bill: 75.00,
+  state: "WA"
+});
+</pre>
+        </div>
+
+    </section>
+
+    <section>
+
+        <hgroup>
+            <h1>Backbone Models</h1>
+        </hgroup>
+
+        <div class="">
+            <h2>Change some data</h2>
+<pre>
+client1.set("email", "jane2@example.com");
+client1.save();
+
+</pre>
+        </div>
+
+        <div class="action">
+            <h2>Collections</h2>
+<pre>
+var Clients = Backbone.Collection.extend({
+  model: Client,
+  url: "/api/clients"
+});
+
+</pre>
+
+        </div>
+
+    </section>
+
+    <section>
+        <hgroup>
+            <h1>Backbone Collections</h1>
+        </hgroup>
+
+        <div class="">
+            <h2>Data filtering</h2>
+<pre>
+var Clients = Backbone.Collection.extend({
+  model: Client,
+  url: "/api/clients",
+
+  unpaid: function() {
+    return this.filter(function(client) { return client.get('balance') > 0; });
+  }
+
+  outOfState: function() {
+    return this.filter(function(client) { return client.get('state') != "WA"; });
+  }
+
+});
+
+</pre>
+
+        </div>
+
+    </section>
+
+
+
+
+    <section>
+
+        <hgroup>
+            <h1>Backbone Views</h1>
+        </hgroup>
+
+
+        <div class="" style="float: right;">
+            <h2></h2>
+<pre>
+
+
+  addAll: function() {
+    this.clients.each(this.addOne);
+  },
+
+  addNewClient: function() {
+    this.clients.create({
+      name: this.$("input.name").val(),
+      bill: this.$("input.bill").val(),
+      state: this.$("input.state").val(),
+    });
+  }
+
+});
+</pre>
+        </div>
+
+        <div class="" style=""float: left;>
+            <h2></h2>
+<pre>
+var ClientListing = Backbone.View.extend({
+  tagName: "div",
+  events: {
+    "submit form":        "addNewClient"
+  },
+
+  initialize: function() {
+    this.clients = new Clients();
+
+    this.clients.bind('add',     this.addOne);
+    this.clients.bind('reset',   this.addAll);
+  },
+
+  addOne: function(item) {
+    var view = new ClientRow(item);
+    this.$el.append( view.render() );
+  },
+
+</pre>
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <hgroup>
+            <h1>Backbone Views</h1>
+        </hgroup>
+
+        <div class="" style="float: right;">
+<pre>
+
+  updateClient: function() {
+    this.model.set("name", this.$('input.name').val());
+    this.model.save();
+  },
+
+  clear: function() {
+    this.model.destroy();
+  }
+
+});
+</pre>
+        </div>
+
+        <div class="" style="float: left;">
+<pre>
+var ClientRow = Backbone.View.extend({
+  tagName: "li",
+  className: "client-row",
+  template: Mustaches['client_row'],
+
+  events: {
+    "keypress input":       "updateClient",
+    "click .button.delete": "clear"
+  },
+
+  initialize: function() {
+    this.model.bind("change", this.render);
+  }
+
+  render: function() {
+    html = this.template.render(this.model.toJSON())
+    this.$el.html( html );
+  },
+
+</pre>
+        </div>
+
+    </section>
+
+    <section>
+
+        <hgroup>
+            <h1>Frontend Templates: Mustache</h1>
+        </hgroup>
+
+        <div class="">
+            <h2>Listing Template</h2>
+{% highlight html %}
+<div id="user-info">
+  Signed in as {{username}} (<a href="#" class="log-out">Log out</a>)
+</div>
+
+<div id="newClientForm">
+  <input id="new-client" placeholder="Add a client..." type="text" />
+  <input id="new-bill" placeholder="$..." type="text" />
+  <input id="new-state" placeholder="State..." type="text" />
+</div>
+
+<ul id="client-list">
+  <img src='images/spinner.gif' class='spinner' />
+</ul>
+{% endhighlight %}
+        </div>
+
+
+    </section>
+
+
+    <section>
+
+        <hgroup>
+            <h1>Frontend Templates: Mustache</h1>
+        </hgroup>
+
+        <div class="">
+            <h2>Row Template</h2>
+
+{% highlight html %}
+
+<li class="{{#local}}local{{/local}}">
+
+  <div class="view">
+    <input class="edit edit-name" value="{{ name }}">
+    <input class="edit edit-bill" value="{{ bill }}">
+    <input class="edit edit-state" value="{{ state }}">
+    <button class="client-destroy"></button>
+  </div>
+
+</li>
+{% endhighlight %}
+
+        </div>
+
+    </section>
+
+    <section>
+
+        <hgroup>
+            <h1>Frontend Templates: Underscore</h1>
+        </hgroup>
+
+        <div class="">
+            <h2>Example Template</h2>
+
+{% highlight html %}
+<script type="text/template" id="item-template">
+<li class="<%= done ? 'completed' : '' %>">
+    <div class="view">
+        <input class="toggle" type="checkbox" <%= done ? 'checked="checked"' : '' %>>
+        <label class="todo-content"><%= content %></label>
+        <button class="todo-destroy"></button>
+    </div>
+    <input class="edit" value="<%= content %>">
+</li>
+</script>
+{% endhighlight %}
+
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <hgroup>
+            <h1>Demo</h1>
+        </hgroup>
+
+        <div class="">
+            <h2 style="margin-bottom: 2em;">Parse application for managing clients</h2>
+
+            <p><a href="http://parse.com/">Parse.com</a></p>
+            <p><a href="http://columns.mikejestes.com.s3-website-us-east-1.amazonaws.com/">Clients App</a></p>
+
+        </div>
+
+    </section>
+
+<!--
+Model
+View
+Controller
+
+Backbone:
+Models
+Collections
+Views
+
+Model        -> Models / Collections
+View         -> templates via _ or mustache or ?
+Controller   -> View
+
+How to use Model
+
+How to use Collection
+
+Views Meat of Backbone
+
+
+Templates
+    - mustache
+    - _
+    - ???
+
+Parse
+
+Others? Meteor?
+-->
+
+</div>
+<!-- /deck -->
