@@ -1,3 +1,4 @@
 permalink: ':year/:month/:day/:title.html'
 exclude: ['README.md']
 future: true
+baseurl: /presentations
