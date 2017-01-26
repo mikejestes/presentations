@@ -1,0 +1,286 @@
+---
+layout: bham-codes-2017
+title: A simple React primer
+---
+
+<textarea id="source">
+
+class: center, middle
+
+# React - a short primer
+
+Mike Estes
+
+@mikejestes
+
+CTO @PriceWaiter
+
+---
+
+# DHTML
+
+webpage.html
+```html
+
+<script>
+function validateAndSubmit() {
+    if (/@/.exec(email)) {
+        return true;
+    }
+
+    return false;
+}
+</script>
+
+<form>
+    <center>
+        <font size="3">Email:</font>
+        <input type="email" />
+    </center>
+
+    <br><br><br><br>
+
+    <button onclick="validateAndSubmit()">Submit</button>
+</form>
+
+```
+
+---
+
+# Separation
+
+* Semantic Markup = Content
+* JS = Interaction
+* CSS = Presentation
+
+---
+
+# jQuery
+
+index.html
+```html
+<ul class="tab-container">
+    <li class="tab-one active">
+        <a href="#" class="tap-anchor" data-target="target-one">One</a>
+    </li>
+    <li class="tab-two">
+        <a href="#" class="tap-anchor" data-target="target-two">Two</a>
+    </li>
+</ul>
+```
+
+tabs.css
+```css
+.tab-container li { display: none; }
+.tab-container li.active { display: inline-block; }
+```
+
+tabs.js
+```javascript
+$('.tab-container li').on('click', function(e) {
+    $('.tab-container li').removeClass('active');
+    $(e).addClass('active');
+});
+```
+
+---
+
+class: center, middle
+
+# Enter Frameworks
+
+![Frameworks]({{ BASEPATH }}/images/frameworks.jpg)
+
+---
+
+# React Factsheet
+
+- There is XML
+- Declarative
+    - Virtual DOM
+- Top-down data flow
+- ES2015 syntax (especially classes)
+- Facebook
+
+---
+
+# Basic React Component
+
+alert.jsx
+
+```javascript
+
+class Alert extends React.Component {
+
+    render() {
+
+        const { icon, title } = this.props;
+
+        return (
+            <div className="alert">
+                <i className={`fa fa-${icon}`} />
+                {title}
+            </div>
+        );
+    }
+}
+```
+
+---
+
+# Wait that's XML, not Javascript
+
+--
+
+Compiled Javascript
+
+```javascript
+class Alert extends React.Component {
+
+    render() {
+
+        const { icon, title } = this.props;
+
+        return React.createElement(
+            "div",
+            { className: "alert" },
+            React.createElement("i", { className: `fa fa-${ icon }` }),
+            title
+        );
+    }
+}
+```
+
+---
+
+
+# Keeping State
+
+```javascript
+
+class Toggle extends React.Component {
+    constructor() {
+        this.state = {
+            open: false
+        };
+    }
+
+    toggle() {
+        this.setState({ open: !this.state.open });
+    }
+
+    render() {
+
+        let content = '';
+        if (this.state.open) {
+            content = <img src="/images/foo.gif" alt="Foo spelled out" />;
+        }
+
+        return (
+            <div>
+                <button onClick={this.toggle}>Toggle</button>
+                {content}
+            </div>
+        );
+    }
+}
+```
+
+---
+
+# Composing with Containers
+
+```javascript
+
+import Alert from './alert.jsx';
+import Layout from '../containers/layout.jsx';
+
+class Page extends React.Component {
+
+    handleForm() {
+        // magic here
+    }
+
+    render() {
+        return (
+            <div>
+                <Header />
+                <Layout>
+                    <Alert icon="paperclip" title="Attachement Uploaded!" />
+                    <Form onSubmit={this.handleForm} />
+                </Layout>
+                <Footer />
+            </div>
+        );
+    }
+}
+```
+
+---
+
+# Looping
+
+```javascript
+
+class TodoList extends React.Component {
+    render() {
+        return (
+            <ul>
+                {this.props.items.map(item => (
+                    <li key={item.id}>{item.text}</li>
+                ))}
+            </ul>
+        );
+    }
+}
+```
+
+
+---
+
+# Hurdles
+
+* `className`, `style` object
+* ES2015+, Webpack, Babel transforms
+
+---
+
+# What I like about React
+
+* Declarative => predictable
+* Small, reusable components
+* Hot new JS syntax + editing linting
+* Great ecosystem
+
+---
+
+# React Ecosystem
+
+### Modular Styles
+
+### Code Quality
+
+- eslint
+- propTypes
+- flow
+
+### Data Management
+- redux for atomic state changes
+- relay
+
+### Getting Started
+
+- create-react-app
+- react-native
+
+---
+
+# You dropped some XML there
+
+---
+
+# Links
+
+Inspired by [talk by Tessa Thorton](http://2015.cascadiajs.com/speakers/tessa-thorton) at CascadiaJS 2015
+
+</textarea>
