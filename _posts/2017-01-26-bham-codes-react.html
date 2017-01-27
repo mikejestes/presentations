@@ -98,9 +98,14 @@ class: center, middle
 - There is XML
 - Declarative
     - Virtual DOM
+- Components contain markup, state, interaction (possibly style)
 - Top-down data flow
-- ES2015 syntax (especially classes)
-- Facebook
+- Ecmascript 2015 (ES6) syntax (especially classes)
+- Built by Facebook
+- Core package just for markup rendering
+    - ReactDOM
+    - React Native
+    - ReactDOMServer
 
 ---
 
@@ -109,6 +114,8 @@ class: center, middle
 alert.jsx
 
 ```javascript
+
+import React from 'react';
 
 class Alert extends React.Component {
 
@@ -124,6 +131,13 @@ class Alert extends React.Component {
         );
     }
 }
+
+Alert.propTypes = {
+    icon: React.PropTypes.string,
+    title: React.PropTypes.string,
+};
+
+export default Alert;
 ```
 
 ---
@@ -235,13 +249,34 @@ class TodoList extends React.Component {
 }
 ```
 
-
 ---
 
-# Hurdles
+# JSX annoyances
 
-* `className`, `style` object
-* ES2015+, Webpack, Babel transforms
+```javascript
+{% raw %}
+class Alert extends React.Component {
+    render() {
+        return (
+            {/* must return 1 element */}
+            <div>
+                {/* class is reserved word */}
+                <div className="alert">
+                    {/* style must be JS object */}
+                    <div style={{ marginTop: '100px', color: 'blue' }}>
+                        hi
+                    </div>
+                    {/* all html tags must be closed */}
+                    <br />
+                    {/* comment syntax is weird */}
+                </div>
+                <p>A small note here</p>
+            </div>
+        );
+    }
+}
+{% endraw %}
+```
 
 ---
 
@@ -249,33 +284,28 @@ class TodoList extends React.Component {
 
 * Declarative => predictable
 * Small, reusable components
-* Hot new JS syntax + editing linting
+* Hot new JS syntax + editor linting
 * Great ecosystem
+* Hot Module Reloading - Time Travel
 
 ---
 
 # React Ecosystem
 
-### Modular Styles
-
 ### Code Quality
 
-- eslint
-- propTypes
-- flow
+- [eslint](http://eslint.org/)
+- [propTypes](https://facebook.github.io/react/docs/typechecking-with-proptypes.html)
+- [flowtype](https://flowtype.org/)
 
 ### Data Management
-- redux for atomic state changes
-- relay
+- [redux](https://github.com/reactjs/redux) for atomic state changes
+- [relay](https://facebook.github.io/relay/) Facebook bridge to GraphQL backends
 
 ### Getting Started
 
-- create-react-app
-- react-native
-
----
-
-# You dropped some XML there
+- [react-native](https://facebook.github.io/react-native/)
+- [create-react-app](https://github.com/facebookincubator/create-react-app)
 
 ---
 
